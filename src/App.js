@@ -30,12 +30,15 @@ class App extends Component {
     }
   }
 
-  createTicketContract = () => {
+  createTicketContract = async () => {
     let price = this.state.price
-    let deploy = TicketFactoryContract.methods.createTicket(price)
+    let deploy = await TicketFactoryContract.methods.createTicket(price).send({
+      from: account,
+      gas: 4700000
+    })
   }
 
-  implementJoinFunc = () => {
+  implementJoinFunc = async () => {
     let day = this.state.day
     let number = this.state.number
     let id = this.state.id
@@ -45,19 +48,29 @@ class App extends Component {
     let join = TicketFactoryContract.methods.join(day, number).send({
       from: account,
       value: value,
-
+      gas: 4700000
     })
   }
 
-  implementRefundFunc = () => {
-    let account = this.state.accout
+  implementRefundFunc = async () => {
+    let account = this.state.account
+    let id = this.state.id
+    let TicketContracts = this.state.contracts
+    let TicketContract = TicketContracts[id]
+    let join = TicketFactoryContract.methods.getRefund().send({
+      from: account,
+      gas: 4700000
+    })
   }
 
   withdrawByManager = () => {
     let account = this.state.account
     let id = this.state.id    let TicketContracts = this.state.contracts
     let TicketContract = TicketContracts[id]
-    let withdraw = TicketContract.methods.withdraw()
+    let withdraw = TicketContract.methods.withdraw().send({
+      from: account,
+      gas: 4700000
+    })
   }
 
   async conponentWillMount() {
