@@ -8,6 +8,8 @@ import web3 from "../web3";
 import TicketFactoryContract from "../../deploy/contract_factory";
 import abi from "../../deploy/contract_ticket";
 
+import firebase from 'firebase';
+
 class TicketList extends Component {
     constructor(props, { authData }) {
         super(props);
@@ -64,7 +66,7 @@ class TicketList extends Component {
 
     async componentWillMount() {
         const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
-        const accounts = web3.eth.getAccounts()
+        const accounts = await web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
         console.log({
@@ -86,6 +88,10 @@ class TicketList extends Component {
             account,
         })
         console.log(this.state)
+
+        this.dataRef = firebase.database().ref('tickets/');
+
+
     }
 
     render() {
