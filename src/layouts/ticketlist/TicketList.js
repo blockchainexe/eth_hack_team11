@@ -1,7 +1,11 @@
-import React, { Component } from 'react'
-import { Link } from "react-router"
 
 import TicketCard from '../components/TicketCard';
+import React, {
+    Component
+} from 'react'
+import web3 from '../web3'
+import TicketFactoryContract from '../../deploy/contract_factory'
+import abi from '../../deploy/contract_ticket'
 
 // etherum
 import web3 from "../web3";
@@ -11,8 +15,16 @@ import abi from "../../deploy/contract_ticket";
 class TicketList extends Component {
     constructor(props, { authData }) {
         super(props);
-        authData = this.props;
-        this.state = {};
+
+        authData = this.props
+        this.state = {}
+    }
+
+    onPriceChange = async (e) => {
+        e.preventEvent()
+        let price = e.target.value
+        this.setState({price})
+
     }
 
     // QR codeを読んだ時発火
@@ -33,10 +45,12 @@ class TicketList extends Component {
     }
 
     createTicketContract = async () => {
-        let price = this.state.price
+
+        let price = 0.1
+        let stringPrice = String(price)
         let account = this.state.account
-        let ticket
-        TicketFactoryContract.methods.createTicket(price).send({
+        TicketFactoryContract.methods.createTicket(web3.utils.toWei(stringPrice, 'ether')).send({
+
             from: account,
             gas: 4700000
         }).then(async () => {
@@ -64,25 +78,29 @@ class TicketList extends Component {
 
     async componentWillMount() {
         const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
-        const accounts = web3.eth.getAccounts()
+
+        const accounts = await web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
-        console.log({
+        console.log(
             addresses
-        })
+        )
         if (addresses.length !== 0) {
-            addresses.map(async (address) => {
-                let contract = await new web3.eth.contract(abi, address)
-                let uid_test = await contract.methods.requests(0).call()
+            await addresses.map(async (address) => {
+                let contract = await new web3.eth.Contract(abi, address)
+                // let uid_test = await contract.methods.requests[0].call()
+                console.log(contract.methods)
                 console.log({
-                    contract,
-                    uid_test
+                    contract
                 })
                 contracts.push(contract)
             })
+            this.setState({
+                contracts,
+            })
         }
         this.setState({
-            contracts,
+
             account,
         })
         console.log(this.state)
@@ -97,18 +115,19 @@ class TicketList extends Component {
                         <ul style={listStyle}>
                             {
                                 [...Array(8).keys()].map(i => {
-                                    return (
-                                        <li>
-                                            <Link to="/detail/sensouji">
-                                                <TicketCard key={i} />
-                                            </Link>
-                                        </li>
-                                    )
+
+                                    return <TicketCard key={i} id={i} />
+
                                 })
                             }
                         </ul>
                     </div>
                 </div>
+            <input
+                type="button"
+                onClick={this.createTicketContract}
+                value="create"
+            />
             </main>
         )
     }
@@ -123,5 +142,6 @@ const listStyle = {
     marginTop: 80,
     width: 1400,
     justifyContent: "space-between",
-    listStyle: "none"
+
 }
+

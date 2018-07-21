@@ -8,6 +8,7 @@ import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
 
 class Home extends Component {
+
   render() {
 
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
@@ -62,6 +63,7 @@ const homeStyle = {
   margin: "200px auto auto auto",
   textAlign: "center",
   backgroundColor: "rgba(128,128,128,0.0)",
+  cursor: "pointer",
   borderRadius: 30,
   display: "table"
 }

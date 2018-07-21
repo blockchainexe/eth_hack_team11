@@ -15,7 +15,7 @@
     "cross-spawn": "4.0.2",
     "css-loader": "0.26.0",
     "detect-port": "1.0.1",
-    "dotenv": "2.0.0",
+    "dotenv": "^2.0.0",
     "eslint": "3.8.1",
     "eslint-config-react-app": "^0.5.0",
     "eslint-loader": "1.6.0",
@@ -67,7 +67,11 @@
     "redux": "^3.6.0",
     "redux-auth-wrapper": "^1.0.0",
     "redux-thunk": "^2.2.0",
+    "solc": "^0.4.24",
     "styled-components": "^3.3.3",
+
+    "truffle-hdwallet-provider": "0.0.5",
+
     "uport-connect": "^0.7.3",
     "web3": "^1.0.0-beta.34"
   },

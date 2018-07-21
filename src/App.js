@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import { Link } from 'react-router'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 
@@ -13,6 +14,7 @@ import './css/pure-min.css'
 import './App.css'
 
 class App extends Component {
+
   render() {
     const OnlyAuthLinks = VisibleOnlyAuth(() =>
       <span>
