@@ -22,6 +22,7 @@ contract Ticket is Ownable {
     using SafeMath for uint256;
     struct Request {
         uint value;
+        uint periodDay;
         bool complete;
         mapping(address => bool) approvals;
         address buyer;
@@ -32,11 +33,10 @@ contract Ticket is Ownable {
     Request[] public requests; //requestsをどこでも使えるように
     address public manager;
     uint public ticketPrice;
-    uint public periodDay;
     uint public approversCount; //how many people has joined in and contributed to this contract
     //type of key => type of values, public, label the variables
     mapping(address => bool) public approvers;
-    mapping(address => uint) public requestedTime;
+    // mapping(address => uint) public requestedTime;
     // mapping(Request => address) public ticketToOwner;
     modifier restricted() {
         require(msg.sender == manager);
@@ -57,12 +57,13 @@ contract Ticket is Ownable {
 
         Request memory newRequest = Request({
            value: ticketPrice * _num,
+           periodDay: now + _days * 1 days,
            complete: false,
            buyer: msg.sender,
            num: _num
         });
+
         requests.push(newRequest);
-        periodDay = requestedTime[msg.sender].add(_days * 1 minutes);
         //label[key]→valueをdefault(=false)からtrueに設定
         approvers[msg.sender] = true;
         approversCount++;
@@ -94,10 +95,10 @@ contract Ticket is Ownable {
     }
 
     function getRefund(uint index) public {
-        require(request.buyer==msg.sender);
-        require(block.timestamp >= periodDay);
-        require(!request.approvals[msg.sender]);
         Request storage request = requests[index];
+        require(request.buyer==msg.sender);
+        require(block.timestamp >= request.periodDay);
+        require(!request.approvals[msg.sender]);
         require(request.buyer == msg.sender);
         msg.sender.transfer(request.value);
         request.complete = true;
