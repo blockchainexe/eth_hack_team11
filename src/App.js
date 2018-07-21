@@ -37,7 +37,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
+        <nav className="navbar pure-menu pure-menu-horizontal" style={{zIndex:1000}}>
           <Link to="/" className="pure-menu-heading pure-menu-link">God payment</Link>
           <ul className="pure-menu-list navbar-right">
             <OnlyGuestLinks />

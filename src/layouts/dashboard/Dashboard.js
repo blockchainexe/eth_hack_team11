@@ -82,15 +82,6 @@ injectGlobal`
 
     .title {
         font-family: 'selima', sans-serif;
-        c-webkit-transform: scale(1);
-        transform: scale(1);
-        -webkit-transition: .3s ease-in-out;
-        transition: .3s ease-in-out;
     }
 
-    .title:hover {
-        font-family: 'selima', sans-serif;
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
-    }
 `;
