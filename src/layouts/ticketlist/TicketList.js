@@ -3,9 +3,8 @@ import TicketCard from '../components/TicketCard';
 import React, {
     Component
 } from 'react'
-import web3 from '../web3'
-import TicketFactoryContract from '../../deploy/contract_factory'
-import abi from '../../deploy/contract_ticket'
+
+
 
 // etherum
 import web3 from "../web3";
