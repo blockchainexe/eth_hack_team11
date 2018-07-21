@@ -3,6 +3,7 @@ import Background from '../../img/sensouji.jpg';
 import "../../css/fonts.css"
 import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
+import use from '../../img/use.png';
 
 class Dashboard extends Component {
   constructor(props, { authData }) {
@@ -16,16 +17,14 @@ class Dashboard extends Component {
       <main className="container" style={backgroundStyle}>
         <div className="pure-g">
           <div className="pure-u-1-1">
+            <div>
             <section>
               <div>
                 <div className="title" style={titleStyle}>Welcome Home {this.props.authData.name}!!</div>
               </div>
+              <img style={useStyle} src={use} alt="how to use" />
             </section>
-            <section>
-              <div>
-                <h1>How to use this Application</h1>
-              </div>
-            </section>
+            </div>
           </div>
         </div>
       </main>
@@ -44,6 +43,14 @@ const homeStyle = {
   borderRadius: 30,
   display: "table"
 }
+
+const useStyle = {
+  width: "70vw",
+  height: "60vh",
+  marginLeft: 180,
+  textAlign: "center",
+}
+
 
 const backgroundStyle = {
   width: "100vw",

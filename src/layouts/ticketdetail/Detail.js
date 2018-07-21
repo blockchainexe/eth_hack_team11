@@ -42,44 +42,49 @@ class Detail extends Component {
         console.log("detail componentのstate⬇️");
         console.log(this.state)
         return (
-            <div style={backgroundStyle}>
-                <div style={containerStyle}>
-                    <section style={leftStyle}>
-                        <Card style={cardStyle}>
-                            <CardMedia>
-                                <img src={Sensouji} alt="sensouji" />
-                            </CardMedia>
-                        </Card>
-                        <div style={titleStyle}>浅草寺</div>
-                        <div style={explanationStyle}>
-                            texttexttexttexttexttexttextexttexttexttexttexttexttexttexttexttexttexttextexttexttexttexttexttexttexttexttexttexttexttextexttexttexttexttexttexttexttexttexttexttexttextexttexttexttexttex
-                </div>
-                    </section>
+            <main className="container" style={backgroundStyle} >
+                <div className="pure-g" >
+                    <div className="pure-u-1-1">
+                        <div style={containerStyle}>
+                            <section style={leftStyle}>
+                                <Card style={cardStyle}>
+                                    <CardMedia>
+                                        <img src={Sensouji} alt="sensouji" />
+                                    </CardMedia>
+                                </Card>
+                                <div style={titleStyle}>Sensō-ji</div>
+                                <div style={explanationStyle}>
+                                    Sensō-ji (金龍山浅草寺 Kinryū-zan Sensō-ji) is an ancient Buddhist temple located in Asakusa, Tokyo, Japan. It is Tokyo's oldest temple, and one of its most significant. Formerly associated with the Tendai sect of Buddhism, it became independent after World War II. 
+                                </div>
+                            </section>
 
-                    <section style={rightStyle}>
-                        <div style={rightTopStyle}>
-                            <div style={labelStyle}>行きたい日程を選択</div>
-                            <DatePicker
-                                inline
-                                selected={this.state.startDate}
-                                onChange={this.handleChangeDate}
-                            />
+                            <section style={rightStyle}>
+                                <div style={rightTopStyle}>
+                                    <div style={labelStyle}>Choose the day</div>
+                                    <DatePicker
+                                        inline
+                                        selected={this.state.startDate}
+                                        onChange={this.handleChangeDate}
+                                    />
+                                </div>
+                                <div>
+                                    <div style={labelStyle}>2-3-1 Asakusa, Taitō-ku, Tokyo</div>
+                                    <div style={labelStyle}>0.1Eth per a person</div>
+                                    <div style={labelStyle}>How many ticket you buy?</div>
+                                    <div>
+                                        <form onSubmit={this.handleSubmit} style={formStyle}>
+                                            {/*何人参加するか*/}
+                                            <input type="number" min="1" step="1" value={this.state.number} onChange={this.handleChangeNumber} />
+                                            <button type="submit" style={submitStyle}>Join!</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
-                        <div>
-                            <div style={labelStyle}>場所の情報</div>
-                            <div style={labelStyle}>一人: 0.1Eth</div>
-                            <div style={labelStyle}>How many people?</div>
-                            <div>
-                                <form onSubmit={this.handleSubmit} style={formStyle}>
-                                    {/*何人参加するか*/}
-                                    <input type="number" min="1" step="1" value={this.state.number} onChange={this.handleChangeNumber} />
-                                    <button type="submit" style={submitStyle}>Join!</button>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
+                    </div>
                 </div>
-            </div>
+            </main>
+            
         );
     }
 }
@@ -87,6 +92,8 @@ class Detail extends Component {
 export default Detail;
 
 const backgroundStyle = {
+    width: "100vw",
+    height: "100vh",
     background: `url(${Sensouji})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -94,13 +101,18 @@ const backgroundStyle = {
 };
 
 const containerStyle = {
+    top:"10%",
+    left:"7%",
     display: "flex",
-    width: 1200,
+    width: "80vw",
+    height: "75vh",
     margin: "auto",
-    padding: "100px 50px 0px 50px",
+    padding: "50px 50px 0px 50px",
     justifyContent: "space-between",
     borderRadius: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    position:"fixed",
+    textAlign: "center"
 };
 
 const leftStyle = {
@@ -124,7 +136,7 @@ const explanationStyle = {
     height: 300,
     fontSize: 20,
     wordWrap: "break-word",
-    marginTop: 100
+    margin: "auto"
 };
 
 const rightTopStyle = {
