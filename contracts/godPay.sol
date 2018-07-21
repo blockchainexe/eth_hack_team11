@@ -63,11 +63,11 @@ contract Ticket {
         joinersCount++;
     }
 
-    function withdraw(uint _uidkey) public restricted {
+    function withdraw(uint _uidkey, address _buyer) public restricted {
         //request[index]というのをたくさん使うのでこのfunction内での変数を設定
         //Requestを使うこと使うことでspecify we are about to create a variable
         //that is going to refer to a request struct
-        uint index = ticketOfOwner[msg.sender];
+        uint index = ticketOfOwner[_buyer];
         Request storage request = requests[index];
 
         require(request.UidKey == _uidkey);

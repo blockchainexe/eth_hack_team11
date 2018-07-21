@@ -6,11 +6,14 @@ import Background from '../../img/top_pic.jpg';
 import "../../css/fonts.css"
 import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
+import web3 from '../web3'
+import TicketFactoryContract from '../../deploy/contract_factory'
+import abi from '../../deploy/contract_ticket'
 
 class Home extends Component {
 
   render() {
-    console.log(this.props)
+
     const OnlyGuestLinks = HiddenOnlyAuth(() =>
       <section>
         <div style={homeStyle} onClick={(event) => this.props.onLoginUserClick(event)}>

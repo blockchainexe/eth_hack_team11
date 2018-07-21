@@ -12,7 +12,6 @@ import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import TicketList from "./layouts/ticketlist/TicketList"
 import Profile from './user/layouts/profile/Profile'
-import web3Functions from "./layouts/components/web3Functions"
 
 
 // Redux Store
@@ -25,10 +24,10 @@ ReactDOM.render((
     <MuiThemeProvider>
       <Router history={history}>
         <Route path="/" component={App}>
-          <IndexRoute component = {() => <Home web3Functions={web3Functions} />}/>
-          <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} props={web3Functions}/>
-          <Route path="profile" component={UserIsAuthenticated(Profile)} props={web3Functions}/>
-          <Route path="tickets" component={UserIsAuthenticated(TicketList)} props={web3Functions}/>
+          <IndexRoute component={Home} />
+          <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
+          <Route path="profile" component={UserIsAuthenticated(Profile)} />
+          <Route path="tickets" component={UserIsAuthenticated(TicketList)} />
         </Route>
       </Router>
     </MuiThemeProvider>

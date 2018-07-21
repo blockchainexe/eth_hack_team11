@@ -1,4 +1,21 @@
 const abiTicket = [{
+    "constant": false,
+    "inputs": [{
+        "name": "_uidkey",
+        "type": "uint256"
+      },
+      {
+        "name": "_buyer",
+        "type": "address"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "ticketPrice",
@@ -8,18 +25,6 @@ const abiTicket = [{
     }],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [{
-      "name": "_uidkey",
-      "type": "uint256"
-    }],
-    "name": "withdraw",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -70,42 +75,6 @@ const abiTicket = [{
       "name": "",
       "type": "uint256"
     }],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [{
-      "name": "",
-      "type": "uint256"
-    }],
-    "name": "requests",
-    "outputs": [{
-        "name": "value",
-        "type": "uint256"
-      },
-      {
-        "name": "periodDay",
-        "type": "uint256"
-      },
-      {
-        "name": "complete",
-        "type": "bool"
-      },
-      {
-        "name": "buyer",
-        "type": "address"
-      },
-      {
-        "name": "num",
-        "type": "uint256"
-      },
-      {
-        "name": "UidKey",
-        "type": "uint256"
-      }
-    ],
     "payable": false,
     "stateMutability": "view",
     "type": "function"
