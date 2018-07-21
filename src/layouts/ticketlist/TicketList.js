@@ -95,7 +95,7 @@ class TicketList extends Component {
                         <div style={listStyle}>
                             {
                                 [...Array(8).keys()].map(i => {
-                                    return <TicketCard key={i} />
+                                    return <TicketCard key={i}  />
                                 })
                             }
                         </div>

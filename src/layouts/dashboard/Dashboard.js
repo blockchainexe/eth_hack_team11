@@ -46,7 +46,6 @@ class Dashboard extends Component {
     })
   }
 
-
   render() {
     console.log(this.props.authData)
     return (

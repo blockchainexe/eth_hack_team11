@@ -12,6 +12,12 @@ const TicketCard = (props) => {
                 <CardText>
                     fucking awesome super cool temple!
             </CardText>
+            <input
+                type="button"
+                className="Girl-attack-button"
+                // onClick={e => props.clickBattleHandler(e, mygirl.girlsId)}
+                value="Refund"
+            />
             </Card>
         </div>
     );
