@@ -1,10 +1,9 @@
-
+// React dependency
 import TicketCard from '../components/TicketCard';
 import React, {
     Component
 } from 'react'
 import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
-import { Carousel } from 'react-responsive-carousel';
 import { Link } from "react-router"
 
 // etherum
@@ -12,10 +11,13 @@ import web3 from "../web3";
 import TicketFactoryContract from "../../deploy/contract_factory";
 import abi from "../../deploy/contract_ticket";
 
-
+// Fonts and Images
 import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
 import Sensouji from "../../img/sensouji.jpg";
+import Kyoto from "../../img/kyoto.jpg";
+
+// Firebase 
 import firebase from 'firebase';
 
 class TicketList extends Component {
@@ -24,7 +26,7 @@ class TicketList extends Component {
 
         authData = this.props
         this.state = {
-            names: [
+            names: [ 
                 "Shinagawa Aquarium",
                 "Ghiburi Museum",
                 "Kabukiza",
@@ -167,9 +169,14 @@ class TicketList extends Component {
 
     render() {
         return (
-            <main className="container">
+            <main className="container" style={backgroundStyle}>
                 <div className="pure-g">
                     <div className="pure-u-1-1">
+                        <div style={{textAlign:"center"}}>
+                            <h1 style={titleStyle}>Tickets</h1>
+                            <h2 style={titleStyle}>1. Choose the place where you want to go</h2>
+                            <h2 style={titleStyle}>2. Buy ticket! </h2>
+                        </div>
                         <ul style={listStyle}>
                             {
                                 [...this.state.url].map((value, index, array) =>{
@@ -183,7 +190,7 @@ class TicketList extends Component {
                                                         <img src={value} alt="project-image" />
                                                     </CardMedia>
                                                     <CardText>
-                                                        fucking awesome super cool temple!
+                                                        text
                                                     </CardText>
                                                 </Card>
                                             </div>
@@ -242,8 +249,6 @@ const imgStyle = {
     height: "70%"
 }
 
-
-
 const textStyle = {
     textAlign: "center",
     display: "table-cell",
@@ -255,18 +260,18 @@ const textStyle = {
     margin: "auto"
 }
 
-injectGlobal`
-    @font-face {
-        font-family: 'selima';
-        src: url(${selima}) format('opentype');
-        font-weight: normal;
-        font-style: normal;
-    }
+const backgroundStyle = {
+    width: "100vw",
+    height: "100vh",
+    background: `url(${Kyoto})`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat"
+}
 
-    .title {
-        font-family: 'selima', sans-serif;
-        text-align: center
-    }
-
-`;
+const titleStyle = {
+    fontSize: "300%",
+    fontFamily: "selima",
+    color: "white"
+}
 
