@@ -1,16 +1,19 @@
 import React, {
   Component
 } from 'react'
+
+// Ethreum
 import web3 from '../web3'
 import TicketFactoryContract from '../../deploy/contract_factory'
 import abi from '../../deploy/contract_ticket'
 
+// Images and Fonts
 import Background from '../../img/sensouji.jpg';
-import "../../css/fonts.css"
 import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
 import use from '../../img/use.png';
 
+// Firebase 
 import firebase from 'firebase';
 
 class Dashboard extends Component {
@@ -72,8 +75,10 @@ class Dashboard extends Component {
                 <div>
                   <div className="title" style={titleStyle}>Welcome Home {this.props.authData.name}!!</div>
                 </div>
-                <img style={useStyle} src={use} alt="how to use" />
               </section>
+              <div style={boxStyle}>
+                <img src={use} style={useStyle}/>
+              </div>
             </div>
           </div>
         </div>
@@ -97,10 +102,9 @@ const homeStyle = {
 const useStyle = {
   width: "70vw",
   height: "60vh",
-  marginLeft: 180,
-  textAlign: "center",
+  margin: "auto" 
+  
 }
-
 
 const backgroundStyle = {
   width: "100vw",
@@ -122,25 +126,11 @@ const titleStyle = {
   color: "white"
 }
 
-injectGlobal`
-    @font-face {
-        font-family: 'selima';
-        src: url(${selima}) format('opentype');
-        font-weight: normal;
-        font-style: normal;
-    }
+const boxStyle = {
+  margin : "auto",
+  height: "30vh",
+  width: "100vw",
+  textAlign: "center",
+  
+}
 
-    .title {
-        font-family: 'selima', sans-serif;
-        c-webkit-transform: scale(1);
-        transform: scale(1);
-        -webkit-transition: .3s ease-in-out;
-        transition: .3s ease-in-out;
-    }
-
-    .title:hover {
-        font-family: 'selima', sans-serif;
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
-    }
-`;
