@@ -61,21 +61,26 @@ class TicketList extends Component {
     }
 
     async componentWillMount() {
-        const addresses = await TicketFactoryContract.methods.getDeployedTickets()
-        const owner = TicketFactoryContract.methods.owner().call()
+        const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
         const accounts = web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
-        if (!addresses) {
-            await addresses.map((address) => {
-                let contract = new web3.eth.contract(abi, address)
-                console.log({ contract })
+        console.log({
+            addresses
+        })
+        if (addresses.length !== 0) {
+            addresses.map(async (address) => {
+                let contract = await new web3.eth.contract(abi, address)
+                let uid_test = await contract.methods.requests(0).call()
+                console.log({
+                    contract,
+                    uid_test
+                })
                 contracts.push(contract)
             })
         }
         this.setState({
             contracts,
-            owner,
             account,
         })
         console.log(this.state)

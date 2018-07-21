@@ -13,16 +13,19 @@ class Dashboard extends Component {
   }
 
   async componentWillMount() {
-    const addresses = await TicketFactoryContract.methods.getDeployedTickets()
+    const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
     const accounts = web3.eth.getAccounts()
     const account = accounts[0]
     let contracts = []
-    addresses.map( async (address) => {
-      let contract = await new web3.eth.contract(abi, address)
-      let uid_test = await contract.methods.requests(0).call()
-      console.log({ contract, uid_test })
-      contracts.push(contract)
-    })
+    console.log({addresses})
+    if (addresses.length !== 0) {
+      addresses.map(async (address) => {
+        let contract = await new web3.eth.contract(abi, address)
+        let uid_test = await contract.methods.requests(0).call()
+        console.log({ contract, uid_test })
+        contracts.push(contract)
+      })
+    }
     this.setState({
       contracts,
       account,
