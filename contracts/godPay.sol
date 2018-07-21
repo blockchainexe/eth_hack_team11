@@ -28,7 +28,7 @@ contract Ticket {
     }
     //These are all variables or pieces of data that are held in out contracts storage
     //storage is available between functions calls (like a computer's hard drive)
-    Request[] public requests; //requestsをどこでも使えるように
+    Request[] internal requests; //requestsをどこでも使えるように
     address public manager;
     uint public ticketPrice;
     uint public joinersCount; //how many people has joined in and contributed to this contract

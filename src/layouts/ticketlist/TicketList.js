@@ -13,6 +13,12 @@ class TicketList extends Component {
         this.state = {}
     }
 
+    onPriceChange = async (e) => {
+        e.preventEvent()
+        let price = e.target.value
+        this.setState({price})
+    }
+
     // QR codeを読んだ時発火
     withdrawByManager = async () => {
         let account = this.state.account
@@ -31,10 +37,10 @@ class TicketList extends Component {
     }
 
     createTicketContract = async () => {
-        let price = this.state.price
+        let price = 0.1
+        let stringPrice = String(price)
         let account = this.state.account
-        let ticket
-        TicketFactoryContract.methods.createTicket(price).send({
+        TicketFactoryContract.methods.createTicket(web3.utils.toWei(stringPrice, 'ether')).send({
             from: account,
             gas: 4700000
         }).then(async () => {
@@ -62,25 +68,27 @@ class TicketList extends Component {
 
     async componentWillMount() {
         const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
-        const accounts = web3.eth.getAccounts()
+        const accounts = await web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
-        console.log({
+        console.log(
             addresses
-        })
+        )
         if (addresses.length !== 0) {
-            addresses.map(async (address) => {
-                let contract = await new web3.eth.contract(abi, address)
-                let uid_test = await contract.methods.requests(0).call()
+            await addresses.map(async (address) => {
+                let contract = await new web3.eth.Contract(abi, address)
+                // let uid_test = await contract.methods.requests[0].call()
+                console.log(contract.methods)
                 console.log({
-                    contract,
-                    uid_test
+                    contract
                 })
                 contracts.push(contract)
             })
+            this.setState({
+                contracts,
+            })
         }
         this.setState({
-            contracts,
             account,
         })
         console.log(this.state)
@@ -95,12 +103,17 @@ class TicketList extends Component {
                         <div style={listStyle}>
                             {
                                 [...Array(8).keys()].map(i => {
-                                    return <TicketCard key={i}  />
+                                    return <TicketCard key={i} id={i} />
                                 })
                             }
                         </div>
                     </div>
                 </div>
+            <input
+                type="button"
+                onClick={this.createTicketContract}
+                value="create"
+            />
             </main>
         )
     }

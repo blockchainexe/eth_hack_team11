@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import Sensouji from "../../img/sensouji.jpg"
 
+
 const TicketCard = (props) => {
     return (
         <div>
@@ -12,12 +13,6 @@ const TicketCard = (props) => {
                 <CardText>
                     fucking awesome super cool temple!
             </CardText>
-            <input
-                type="button"
-                className="Girl-attack-button"
-                // onClick={e => props.clickBattleHandler(e, mygirl.girlsId)}
-                value="Refund"
-            />
             </Card>
         </div>
     );
