@@ -3,14 +3,15 @@ import TicketCard from '../components/TicketCard';
 import React, {
     Component
 } from 'react'
-import web3 from '../web3'
-import TicketFactoryContract from '../../deploy/contract_factory'
-import abi from '../../deploy/contract_ticket'
+
+
 
 // etherum
 import web3 from "../web3";
 import TicketFactoryContract from "../../deploy/contract_factory";
 import abi from "../../deploy/contract_ticket";
+
+import firebase from 'firebase';
 
 class TicketList extends Component {
     constructor(props, { authData }) {
@@ -78,7 +79,6 @@ class TicketList extends Component {
 
     async componentWillMount() {
         const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
-
         const accounts = await web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
@@ -104,6 +104,10 @@ class TicketList extends Component {
             account,
         })
         console.log(this.state)
+
+        this.dataRef = firebase.database().ref('tickets/');
+
+
     }
 
     render() {

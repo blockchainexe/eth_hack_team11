@@ -1,4 +1,3 @@
-
 import React, {
   Component
 } from 'react'
@@ -6,32 +5,42 @@ import web3 from '../web3'
 import TicketFactoryContract from '../../deploy/contract_factory'
 import abi from '../../deploy/contract_ticket'
 
+import Background from '../../img/sensouji.jpg';
+import "../../css/fonts.css"
+import { injectGlobal } from 'styled-components';
+import selima from '../../fonts/selima/selima_.otf';
+import use from '../../img/use.png';
 
 class Dashboard extends Component {
   constructor(props, { authData }) {
     super(props)
-
     authData = this.props
     this.state = {}
   }
 
   async componentWillMount() {
-    let addresses = []
-    addresses =   await TicketFactoryContract.methods.getDeployedTickets().call()
+    const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
     const accounts = await web3.eth.getAccounts()
     const account = accounts[0]
     let contracts = []
-    console.log({addresses})
+    console.log(
+      addresses
+    )
     if (addresses.length !== 0) {
-      addresses.map( async (address) => {
-        let contract = await new web3.eth.contract(abi, address)
-        let uid_test = await contract.methods.requests(0).call()
-        console.log({ contract, uid_test })
+      await addresses.map(async (address) => {
+        let contract = await new web3.eth.Contract(abi, address)
+        // let uid_test = await contract.methods.requests[0].call()
+        console.log(contract.methods)
+        console.log({
+          contract
+        })
         contracts.push(contract)
+      })
+      this.setState({
+        contracts,
       })
     }
     this.setState({
-      contracts,
       account,
     })
     console.log(this.state)
@@ -57,12 +66,12 @@ class Dashboard extends Component {
         <div className="pure-g">
           <div className="pure-u-1-1">
             <div>
-            <section>
-              <div>
-                <div className="title" style={titleStyle}>Welcome Home {this.props.authData.name}!!</div>
-              </div>
-              <img style={useStyle} src={use} alt="how to use" />
-            </section>
+              <section>
+                <div>
+                  <div className="title" style={titleStyle}>Welcome Home {this.props.authData.name}!!</div>
+                </div>
+                <img style={useStyle} src={use} alt="how to use" />
+              </section>
             </div>
           </div>
         </div>
