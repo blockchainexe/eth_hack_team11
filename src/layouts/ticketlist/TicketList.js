@@ -3,14 +3,19 @@ import TicketCard from '../components/TicketCard';
 import React, {
     Component
 } from 'react'
-
-
+import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import { Carousel } from 'react-responsive-carousel';
+import { Link } from "react-router"
 
 // etherum
 import web3 from "../web3";
 import TicketFactoryContract from "../../deploy/contract_factory";
 import abi from "../../deploy/contract_ticket";
 
+
+import { injectGlobal } from 'styled-components';
+import selima from '../../fonts/selima/selima_.otf';
+import Sensouji from "../../img/sensouji.jpg";
 import firebase from 'firebase';
 
 class TicketList extends Component {
@@ -19,7 +24,17 @@ class TicketList extends Component {
 
         authData = this.props
         this.state = {
-            data: []
+            names: [
+                "Shinagawa Aquarium",
+                "Ghiburi Museum",
+                "Kabukiza",
+                "National Museum",        
+                "Pranetalium",
+                "Sensouji",
+                "Tokyo Sky-tree",
+                "Ueno Zoo"
+            ],
+            url: []
         }
     }
 
@@ -107,17 +122,46 @@ class TicketList extends Component {
         })
         console.log(this.state)
 
-        this.dataRef = firebase.database().ref('tickets');
-        let datas = []
-        this.dataRef.on('value', (snapshot) => {
-            
-            snapshot.forEach(function (child) {
-                datas.push(child.val());
-            })
-            console.log(datas);
-        })
-        console.log(this.dataRef)
+        
+        let storage = firebase.storage();
+        let storageRef = storage.ref();
 
+        let allImages = [
+            storageRef.child('images/sensouji.jpg'),
+            storageRef.child('images/ghiburi.jpg'),
+            storageRef.child('images/kabuki.jpg'),
+            storageRef.child('images/nationalmuseum.jpg'),
+            storageRef.child('images/praneta.jpg'),
+            storageRef.child('images/skytree.jpg'),
+            storageRef.child('images/ueno.jpg'),
+            storageRef.child('images/aquarium.jpg')
+        ];
+
+        
+        allImages.map((imgRef) => {
+            this.getUrl(imgRef);
+            console.log("imgRef", imgRef);
+
+        });
+
+    }
+
+    getUrl(imgRef) {
+        let setUrl = undefined;
+
+        imgRef.getDownloadURL().then((url) => {
+            setUrl = url;
+
+            let newArray = this.state.url.slice();
+            newArray.push(setUrl);
+            newArray.sort();
+            this.setState({
+                url: newArray,
+            })
+
+        }).catch(function (error) {
+            console.error(error);
+        });
 
     }
 
@@ -126,12 +170,26 @@ class TicketList extends Component {
             <main className="container">
                 <div className="pure-g">
                     <div className="pure-u-1-1">
-                        <p><strong>User: {this.props.authData.name}</strong></p>
                         <ul style={listStyle}>
                             {
-                                [...Array(8).keys()].map(i => {
+                                [...this.state.url].map((value, index, array) =>{
 
-                                    return <TicketCard key={i} id={i} />
+                                    return (
+                                        <li>
+                                            <Link to="/detail/sensouji">
+                                            <div>
+                                                <Card style={cardStyle}>
+                                                    <CardMedia overlay={<CardTitle title={this.state.names[index]} />}>
+                                                        <img src={value} alt="project-image" />
+                                                    </CardMedia>
+                                                    <CardText>
+                                                        fucking awesome super cool temple!
+                                                    </CardText>
+                                                </Card>
+                                            </div>
+                                            </Link>
+                                        </li>
+                                    )
 
                                 })
                             }
@@ -150,13 +208,65 @@ class TicketList extends Component {
 
 export default TicketList
 
+
+const cardStyle = {
+    width: 312.5,
+    marginTop: 50
+}
+
+
+
 const listStyle = {
     display: "flex",
     flexWrap: "wrap",
-    margin: "auto",
-    marginTop: 80,
-    width: 1400,
+    marginTop: 0,
+    marginBottom: 20,
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "75vw",
     justifyContent: "space-between",
-
+    listStyle: "none",
+    textAlign: "center",
+    padding: 0
 }
+
+const carouselStyle = {
+    textAlign: "center",
+    margin: 0,
+    padding: 40,
+    zIndex: -100
+}
+
+const imgStyle = {
+    width: "auto",
+    height: "70%"
+}
+
+
+
+const textStyle = {
+    textAlign: "center",
+    display: "table-cell",
+    fontSize: "550%",
+    verticalAlign: "middle",
+    fontFamily: "selima",
+    marginTop: 0,
+    marginBottom: 0,
+    margin: "auto"
+}
+
+injectGlobal`
+    @font-face {
+        font-family: 'selima';
+        src: url(${selima}) format('opentype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .title {
+        font-family: 'selima', sans-serif;
+        text-align: center
+    }
+
+`;
 
