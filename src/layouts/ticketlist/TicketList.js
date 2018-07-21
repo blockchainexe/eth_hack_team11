@@ -18,7 +18,9 @@ class TicketList extends Component {
         super(props);
 
         authData = this.props
-        this.state = {}
+        this.state = {
+            data: []
+        }
     }
 
     onPriceChange = async (e) => {
@@ -105,7 +107,16 @@ class TicketList extends Component {
         })
         console.log(this.state)
 
-        this.dataRef = firebase.database().ref('tickets/');
+        this.dataRef = firebase.database().ref('tickets');
+        let datas = []
+        this.dataRef.on('value', (snapshot) => {
+            
+            snapshot.forEach(function (child) {
+                datas.push(child.val());
+            })
+            console.log(datas);
+        })
+        console.log(this.dataRef)
 
 
     }
