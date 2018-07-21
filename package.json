@@ -49,7 +49,9 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "bitcore-mnemonic": "^1.5.0",
     "firebase": "^5.3.0",
+    "keccak": "^1.4.0",
     "material-auto-rotating-carousel": "^2.0.0",
     "material-ui": "^0.20.1",
     "moment": "^2.22.2",
@@ -66,7 +68,8 @@
     "redux-auth-wrapper": "^1.0.0",
     "redux-thunk": "^2.2.0",
     "styled-components": "^3.3.3",
-    "uport-connect": "^0.7.3"
+    "uport-connect": "^0.7.3",
+    "web3": "^1.0.0-beta.34"
   },
   "scripts": {
     "start": "node scripts/start.js",

@@ -1,21 +1,91 @@
 import React, { Component } from 'react'
 import { Link } from "react-router"
-import { Carousel } from 'react-responsive-carousel';
+
 import TicketCard from '../components/TicketCard';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import { injectGlobal } from 'styled-components';
-import selima from '../../fonts/selima/selima_.otf';
-
-import zibri from "../../img/zibri.jpg";
-import kannon from "../../img/kannon.jpg";
-import firework from "../../img/firework.jpg";
-import Sensouji from "../../img/sensouji.jpg";
+// etherum
+import web3 from "../web3";
+import TicketFactoryContract from "../../deploy/contract_factory";
+import abi from "../../deploy/contract_ticket";
 
 class TicketList extends Component {
     constructor(props, { authData }) {
         super(props);
-        authData = this.props
+        authData = this.props;
+        this.state = {};
+    }
+
+    // QR codeを読んだ時発火
+    withdrawByManager = async () => {
+        let account = this.state.account
+        let id = this.state.id
+        let TicketContracts = this.state.contracts
+        let TicketContract = TicketContracts[id]
+        // get hash from QR code
+        let uid;
+        let buyer;
+        TicketContract.methods.withdraw(uid, buyer).send({
+            from: account,
+            gas: 4700000
+        }).then(async () => {
+            console.log("happen: withdraw")
+        })
+    }
+
+    createTicketContract = async () => {
+        let price = this.state.price
+        let account = this.state.account
+        let ticket
+        TicketFactoryContract.methods.createTicket(price).send({
+            from: account,
+            gas: 4700000
+        }).then(async () => {
+            //firebase で情報を保存する。
+            console.log("happen: createTicket")
+        })
+    }
+
+    implementJoinFunc = async () => {
+        let account = this.state.account
+        let day = this.state.day
+        let number = this.state.number
+        let id = this.state.id
+        let TicketContracts = this.state.contracts
+        let TicketContract = TicketContracts[id]
+        let value = await TicketContract.methods.getSummary().ticketPrice
+        TicketContract.methods.join(day, number).send({
+            from: account,
+            value: value,
+            gas: 4700000
+        }).then(async () => {
+            console.log("happen: getSummary")
+        })
+    }
+
+    async componentWillMount() {
+        const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
+        const accounts = web3.eth.getAccounts()
+        const account = accounts[0]
+        let contracts = []
+        console.log({
+            addresses
+        })
+        if (addresses.length !== 0) {
+            addresses.map(async (address) => {
+                let contract = await new web3.eth.contract(abi, address)
+                let uid_test = await contract.methods.requests(0).call()
+                console.log({
+                    contract,
+                    uid_test
+                })
+                contracts.push(contract)
+            })
+        }
+        this.setState({
+            contracts,
+            account,
+        })
+        console.log(this.state)
     }
 
     render() {
@@ -23,46 +93,7 @@ class TicketList extends Component {
             <main className="container">
                 <div className="pure-g">
                     <div className="pure-u-1-1">
-                        <section style={carouselStyle}>
-                            <Carousel autoPlay >
-                                <div style={imgStyle}>
-                                    <img src={Sensouji} />
-                                    <p className="legend">Sensō-ji</p>
-                                </div>
-                                <div>
-                                    <img src={kannon} />
-                                    <p className="legend">Kannon Bridge</p>
-                                </div>
-                                <div>
-                                    <img src={firework} />
-                                    <p className="legend">Sumida Fireworks</p>
-                                </div>
-                                <div>
-                                    <img src={zibri} />
-                                    <p className="legend">Zibri museum</p>
-                                </div>
-
-                            </Carousel>
-                        </section>
-                        <section style={{width:"100%"}}>
-                            <h1 className="text" style={textStyle}>NEW ARRIVAL</h1>
-                        </section>
-                        <ul style={listStyle}>
-                            {
-                                [...Array(8).keys()].map(i => {
-                                    return (
-                                        <li>
-                                            <Link to="/detail/sensouji">
-                                                <TicketCard key={i} />
-                                            </Link>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                        <section style={{ width: "100%" }}>
-                            <h1 className="text" style={textStyle}>HIT LIST</h1>
-                        </section>
+                        <p><strong>User: {this.props.authData.name}</strong></p>
                         <ul style={listStyle}>
                             {
                                 [...Array(8).keys()].map(i => {
@@ -88,54 +119,9 @@ export default TicketList
 const listStyle = {
     display: "flex",
     flexWrap: "wrap",
-    marginTop:0,
-    marginBottom:20,
-    marginLeft: "auto",
-    marginRight:"auto",
-    width: "70vw",
+    margin: "auto",
+    marginTop: 80,
+    width: 1400,
     justifyContent: "space-between",
-    listStyle: "none",
-    textAlign: "center",
-    padding: 0
+    listStyle: "none"
 }
-
-const carouselStyle = {
-    textAlign:"center",
-    margin: 0,
-    padding:40,
-    zIndex: -100
-}
-
-const imgStyle = {
-    width: "auto",
-    height: "70%"
-}
-
-
-
-const textStyle = {
-    textAlign: "center",
-    display: "table-cell",
-    fontSize: "550%",
-    verticalAlign: "middle",
-    fontFamily: "selima",
-    marginTop: 0,
-    marginBottom:0,
-    margin:"auto"
-}
-
-injectGlobal`
-    @font-face {
-        font-family: 'selima';
-        src: url(${selima}) format('opentype');
-        font-weight: normal;
-        font-style: normal;
-    }
-
-    .title {
-        font-family: 'selima', sans-serif;
-        text-align: center
-    }
-
-`;
-
