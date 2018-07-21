@@ -11,6 +11,7 @@ import App from './App'
 import Home from './layouts/home/Home'
 import Dashboard from './layouts/dashboard/Dashboard'
 import TicketList from "./layouts/ticketlist/TicketList"
+import Detail from "./layouts/ticketdetail/Detail"
 import Profile from './user/layouts/profile/Profile'
 
 // Redux Store
@@ -27,6 +28,7 @@ ReactDOM.render((
           <Route path="dashboard" component={UserIsAuthenticated(Dashboard)} />
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
           <Route path="tickets" component={UserIsAuthenticated(TicketList)} />
+          <Route path="detail/:ticketid" component={UserIsAuthenticated(Detail)} />
         </Route>
       </Router>
     </MuiThemeProvider>

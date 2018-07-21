@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Link } from "react-router"
+
 import TicketCard from '../components/TicketCard';
 
 class TicketList extends Component {
@@ -13,13 +15,19 @@ class TicketList extends Component {
                 <div className="pure-g">
                     <div className="pure-u-1-1">
                         <p><strong>User: {this.props.authData.name}</strong></p>
-                        <div style={listStyle}>
+                        <ul style={listStyle}>
                             {
                                 [...Array(8).keys()].map(i => {
-                                    return <TicketCard key={i} />
+                                    return (
+                                        <li>
+                                            <Link to="/detail/sensouji">
+                                                <TicketCard key={i} />
+                                            </Link>
+                                        </li>
+                                    )
                                 })
                             }
-                        </div>
+                        </ul>
                     </div>
                 </div>
             </main>
@@ -36,4 +44,5 @@ const listStyle = {
     marginTop: 80,
     width: 1400,
     justifyContent: "space-between",
+    listStyle: "none"
 }
