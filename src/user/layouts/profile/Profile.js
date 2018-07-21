@@ -7,7 +7,7 @@ class Profile extends Component {
   }
 
   render() {
-    return(
+    return (
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1">
