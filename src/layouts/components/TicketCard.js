@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import Sensouji from "../../img/sensouji.jpg"
 
-
 const TicketCard = (props) => {
     return (
         <div>

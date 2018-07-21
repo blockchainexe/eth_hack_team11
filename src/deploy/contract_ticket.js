@@ -1,4 +1,4 @@
-const abi = [{
+const abiTicket = [{
     "constant": true,
     "inputs": [],
     "name": "ticketPrice",
