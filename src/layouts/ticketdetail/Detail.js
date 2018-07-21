@@ -3,15 +3,22 @@ import { Card, CardMedia } from "material-ui/Card";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
+import createKeccakHash from "keccak";
+import Mnemonic from "bitcore-mnemonic"
 // ここの画像は仮です
 import Sensouji from "../../img/sensouji.jpg"
+
+// ethereum
+import web3 from "../web3";
+import TicketFactoryContract from "../../deploy/contract_factory";
+import abi from "../../deploy/contract_ticket";
 
 class Detail extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            startDate: moment(),
+            toDate: moment(),
             number: 1
         };
 
@@ -21,8 +28,9 @@ class Detail extends Component {
     }
 
     handleChangeDate(date) {
+        console.log(date)
         this.setState({
-            startDate: date
+            toDate: date
         });
     }
 
@@ -33,9 +41,67 @@ class Detail extends Component {
         })
     }
 
-    handleSubmit() {
-        // ここにjoinを押した時の処理がきます。
-        console.log("blockchain上の処理を行います。")
+    handleSubmit(e) {
+        e.preventDefault()
+        // daysを計算
+        const fromDate = moment();
+        const toDate = this.state.toDate;
+        const days = toDate.diff(fromDate, "days") + 1;
+        // uidKey
+        var code = new Mnemonic(Mnemonic.Words.ENGLISH).phrase;
+        const uidKey = createKeccakHash('keccak256').update(code).digest('hex')
+        // num
+        const num = this.state.number;
+
+        
+
+        // Solidity処理は未実装
+        /*
+        async () => {
+            let account = this.state.account
+            let id = this.state.id
+            let TicketContracts = this.state.contracts
+            let TicketContract = TicketContracts[id]
+            let value = await TicketContract.methods.getSummary().ticketPrice
+            TicketContract.methods.join(days, num, uidKey).send({
+                from: account,
+                value: value,
+                gas: 4700000
+            }).then(async () => {
+                console.log("happen: getSummary")
+            })
+        }
+        */
+
+        // 渡すのはmnimonicなのかそれともkecchackしたmnimonicなのか
+        //DBに入れる処理
+        // qrコードページに飛ぶ
+    }
+
+    async componentWillMount() {
+        const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
+        const accounts = web3.eth.getAccounts()
+        const account = accounts[0]
+        let contracts = []
+        console.log({
+            addresses
+        })
+        if (addresses.length !== 0) {
+            addresses.map(async (address) => {
+                let contract = await new web3.eth.contract(abi, address)
+                let uid_test = await contract.methods.requests(0).call()
+                console.log({
+                    contract,
+                    uid_test
+                })
+                contracts.push(contract)
+            })
+        }
+        this.setState({
+            contracts,
+            account,
+        })
+        console.log(this.state)
     }
 
     render() {
@@ -63,7 +129,7 @@ class Detail extends Component {
                                     <div style={labelStyle}>Choose the day</div>
                                     <DatePicker
                                         inline
-                                        selected={this.state.startDate}
+                                        selected={this.state.toDate}
                                         onChange={this.handleChangeDate}
                                     />
                                 </div>
