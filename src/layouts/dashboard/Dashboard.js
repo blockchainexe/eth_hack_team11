@@ -11,6 +11,8 @@ import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
 import use from '../../img/use.png';
 
+import firebase from 'firebase';
+
 class Dashboard extends Component {
   constructor(props, { authData }) {
     super(props)

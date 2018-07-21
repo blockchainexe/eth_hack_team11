@@ -27,7 +27,7 @@ var config = {
   authDomain: "godpay-f1032.firebaseapp.com",
   databaseURL: "https://godpay-f1032.firebaseio.com",
   projectId: "godpay-f1032",
-  storageBucket: "",
+  storageBucket: "godpay-f1032.appspot.com",
   messagingSenderId: "1068715886133"
 };
 firebase.initializeApp(config);
