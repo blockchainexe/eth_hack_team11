@@ -1,3 +1,4 @@
+
 import TicketCard from '../components/TicketCard';
 import React, {
     Component
@@ -6,9 +7,15 @@ import web3 from '../web3'
 import TicketFactoryContract from '../../deploy/contract_factory'
 import abi from '../../deploy/contract_ticket'
 
+// etherum
+import web3 from "../web3";
+import TicketFactoryContract from "../../deploy/contract_factory";
+import abi from "../../deploy/contract_ticket";
+
 class TicketList extends Component {
     constructor(props, { authData }) {
         super(props);
+
         authData = this.props
         this.state = {}
     }
@@ -17,6 +24,7 @@ class TicketList extends Component {
         e.preventEvent()
         let price = e.target.value
         this.setState({price})
+
     }
 
     // QR codeを読んだ時発火
@@ -37,10 +45,12 @@ class TicketList extends Component {
     }
 
     createTicketContract = async () => {
+
         let price = 0.1
         let stringPrice = String(price)
         let account = this.state.account
         TicketFactoryContract.methods.createTicket(web3.utils.toWei(stringPrice, 'ether')).send({
+
             from: account,
             gas: 4700000
         }).then(async () => {
@@ -68,6 +78,7 @@ class TicketList extends Component {
 
     async componentWillMount() {
         const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
+
         const accounts = await web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
@@ -89,6 +100,7 @@ class TicketList extends Component {
             })
         }
         this.setState({
+
             account,
         })
         console.log(this.state)
@@ -100,13 +112,15 @@ class TicketList extends Component {
                 <div className="pure-g">
                     <div className="pure-u-1-1">
                         <p><strong>User: {this.props.authData.name}</strong></p>
-                        <div style={listStyle}>
+                        <ul style={listStyle}>
                             {
                                 [...Array(8).keys()].map(i => {
+
                                     return <TicketCard key={i} id={i} />
+
                                 })
                             }
-                        </div>
+                        </ul>
                     </div>
                 </div>
             <input
@@ -128,4 +142,6 @@ const listStyle = {
     marginTop: 80,
     width: 1400,
     justifyContent: "space-between",
+
 }
+
