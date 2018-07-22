@@ -127,12 +127,12 @@ class Detail extends Component {
         let TicketContracts = this.state.contracts
         let TicketContract = TicketContracts[id]
         let price = this.state.price
-        let value = price * num
+        let value = web3.utils.toWei(String(price * num), "ether")
         console.log(value)
         TicketContract.methods.join(days, num, uidKey).send({
             from: account,
-            value: web3.utils.toWei(String(value), "ether"),
-            gas: 47000000
+            value: 1000,
+            gas: 7000000
         }).then(async () => {
             console.log("happen: getSummary")
         })
