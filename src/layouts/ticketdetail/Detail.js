@@ -12,6 +12,7 @@ import Sensouji from "../../img/sensouji.jpg"
 import web3 from "../web3";
 import TicketFactoryContract from "../../deploy/contract_factory";
 import abi from "../../deploy/contract_ticket";
+import { db } from '../../index'
 
 class Detail extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class Detail extends Component {
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleChangeNumber = this.handleChangeNumber.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.implementJoin = this.implementJoin.bind(this)
     }
 
     handleChangeDate(date) {
@@ -53,55 +55,87 @@ class Detail extends Component {
         // num
         const num = this.state.number;
 
-        
+        console.log("handle submit")
 
-        // Solidity処理は未実装
-        /*
-        async () => {
-            let account = this.state.account
-            let id = this.state.id
-            let TicketContracts = this.state.contracts
-            let TicketContract = TicketContracts[id]
-            let value = await TicketContract.methods.getSummary().ticketPrice
-            TicketContract.methods.join(days, num, uidKey).send({
-                from: account,
-                value: value,
-                gas: 4700000
-            }).then(async () => {
-                console.log("happen: getSummary")
-            })
-        }
-        */
-
-        // 渡すのはmnimonicなのかそれともkecchackしたmnimonicなのか
+        // Solidity処理は未実
+        this.implementJoin(days, num, uidKey)        // 渡すのはmnimonicなのかそれともkecchackしたmnimonicなのか
         //DBに入れる処理
         // qrコードページに飛ぶ
     }
 
     async componentWillMount() {
+        console.log(this.props.location.pathname)
+
+        const path = this.props.location.pathname;
+        const id = path.split("/")[2]
+        console.log("id:", id)
+
+        const names = ["Shinagawa aquarium",
+            "giburi",            
+            "Kabukiza",
+            "The National Museum of Modern Art",
+            "Ikebukuro Planetarium",
+            "sensouji",
+            "Tokyo sky tree",
+            "The Ueno Zoo"
+        ]
+        console.log("name", names[parseInt(id)])
+        // idに対応する情報取る
+        db.collection(`tickets`).doc(`${names[parseInt(id)]}`).get().then(doc => {
+            const data = doc.data()
+            console.log("data" ,data)
+            this.setState({
+                id: data.id,
+                name: data.name,
+                place: data.place,
+                price: data.price,
+                text: data.text,
+                storageID: data.storageID
+            })
+        });
+
         const addresses = await TicketFactoryContract.methods.getDeployedTickets().call()
-        const accounts = web3.eth.getAccounts()
+        const accounts = await web3.eth.getAccounts()
         const account = accounts[0]
         let contracts = []
-        console.log({
+        console.log(
             addresses
-        })
+        )
         if (addresses.length !== 0) {
-            addresses.map(async (address) => {
-                let contract = await new web3.eth.contract(abi, address)
-                let uid_test = await contract.methods.requests(0).call()
+            await addresses.map(async (address) => {
+                let contract = await new web3.eth.Contract(abi, address)
+                // let uid_test = await contract.methods.requests[0].call()
+                console.log(contract.methods)
                 console.log({
-                    contract,
-                    uid_test
+                    contract
                 })
                 contracts.push(contract)
             })
+            this.setState({
+                contracts,
+            })
         }
         this.setState({
-            contracts,
             account,
         })
         console.log(this.state)
+    }
+
+    async implementJoin(days, num, uidKey) {
+        let account = this.state.account
+        let id = this.state.id
+        let TicketContracts = this.state.contracts
+        let TicketContract = TicketContracts[id]
+        let price = this.state.price
+        let value = price * num
+        console.log(value)
+        TicketContract.methods.join(days, num, uidKey).send({
+            from: account,
+            value: web3.utils.toWei(String(value), "ether"),
+            gas: 47000000
+        }).then(async () => {
+            console.log("happen: getSummary")
+        })
     }
 
     render() {
@@ -115,12 +149,12 @@ class Detail extends Component {
                             <section style={leftStyle}>
                                 <Card style={cardStyle}>
                                     <CardMedia>
-                                        <img src={Sensouji} alt="sensouji" />
+                                        <img src={this.state.storageID} alt="sensouji" />
                                     </CardMedia>
                                 </Card>
-                                <div style={titleStyle}>Sensō-ji</div>
+                                <div style={titleStyle}>{this.state.name}</div>
                                 <div style={explanationStyle}>
-                                    Sensō-ji (金龍山浅草寺 Kinryū-zan Sensō-ji) is an ancient Buddhist temple located in Asakusa, Tokyo, Japan. It is Tokyo's oldest temple, and one of its most significant. Formerly associated with the Tendai sect of Buddhism, it became independent after World War II. 
+                                    {this.state.text}
                                 </div>
                             </section>
 
@@ -134,8 +168,8 @@ class Detail extends Component {
                                     />
                                 </div>
                                 <div>
-                                    <div style={labelStyle}>2-3-1 Asakusa, Taitō-ku, Tokyo</div>
-                                    <div style={labelStyle}>0.1Eth per a person</div>
+                                    <div style={labelStyle}>{this.state.place}</div>
+                                    <div style={labelStyle}>{this.state.price} Eth per a person</div>
                                     <div style={labelStyle}>How many ticket you buy?</div>
                                     <div>
                                         <form onSubmit={this.handleSubmit} style={formStyle}>

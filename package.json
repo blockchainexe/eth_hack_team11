@@ -58,6 +58,7 @@
     "react": "^15.4.2",
     "react-datepicker": "^1.5.0",
     "react-dom": "^15.4.2",
+    "react-firestore": "^0.8.1",
     "react-iframe": "^1.2.0",
     "react-redux": "^5.0.2",
     "react-responsive-carousel": "^3.1.41",
