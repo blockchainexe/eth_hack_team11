@@ -4,7 +4,10 @@ import React, {
     Component
 } from 'react'
 import { Card, CardMedia, CardTitle, CardText } from 'material-ui/Card';
-import { Link } from "react-router"
+import { Link } from "react-router";
+
+import { FirestoreDocument } from 'react-firestore';
+import {db} from '../../index'
 
 // etherum
 import web3 from "../web3";
@@ -146,6 +149,12 @@ class TicketList extends Component {
 
         });
 
+        db.collection("tickets").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(`${doc.id} => ${doc.data()}`);
+            });
+        });
+
     }
 
     getUrl(imgRef) {
@@ -183,17 +192,17 @@ class TicketList extends Component {
 
                                     return (
                                         <li>
-                                            <Link to="/detail/sensouji">
-                                            <div>
-                                                <Card style={cardStyle}>
-                                                    <CardMedia overlay={<CardTitle title={this.state.names[index]} />}>
-                                                        <img src={value} alt="project-image" />
-                                                    </CardMedia>
-                                                    <CardText>
-                                                        text
-                                                    </CardText>
-                                                </Card>
-                                            </div>
+                                            <Link to={`/detail/${index}`}>
+                                                <div>
+                                                    <Card style={cardStyle}>
+                                                        <CardMedia overlay={<CardTitle title={this.state.names[index]} />}>
+                                                            <img src={value} alt="project-image" />
+                                                        </CardMedia>
+                                                        <CardText>
+                                                                
+                                                        </CardText>
+                                                    </Card>
+                                                </div>
                                             </Link>
                                         </li>
                                     )

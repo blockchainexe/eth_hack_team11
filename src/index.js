@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { UserIsAuthenticated } from './util/wrappers.js'
-import firebase from 'firebase';
+import firebase from "firebase"
 
 // Layouts
 import App from './App'
@@ -31,8 +31,10 @@ var config = {
   messagingSenderId: "1068715886133"
 };
 firebase.initializeApp(config);
+export const db = firebase.firestore();
 
 ReactDOM.render((
+  
   <Provider store={store}>
     <MuiThemeProvider>
       <Router history={history}>
@@ -46,6 +48,7 @@ ReactDOM.render((
       </Router>
     </MuiThemeProvider>
   </Provider>
+  
 ),
   document.getElementById('root')
 )

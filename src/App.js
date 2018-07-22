@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import { Link } from 'react-router'
 import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
+import { FirestoreProvider } from 'react-firestore';
+
 
 // UI Components
 import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
