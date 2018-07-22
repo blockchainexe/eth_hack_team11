@@ -12,9 +12,11 @@ import Background from '../../img/sensouji.jpg';
 import { injectGlobal } from 'styled-components';
 import selima from '../../fonts/selima/selima_.otf';
 import use from '../../img/use.png';
+import Unknown from '../../img/Unkno.png';
 
 // Firebase 
 import firebase from 'firebase';
+import { white } from 'material-ui/styles/colors';
 
 class Dashboard extends Component {
   constructor(props, { authData }) {
@@ -77,7 +79,7 @@ class Dashboard extends Component {
                 </div>
               </section>
               <div style={boxStyle}>
-                <img src={use} style={useStyle}/>
+                <img src={Unknown} style={useStyle}/>
               </div>
             </div>
           </div>
@@ -102,9 +104,9 @@ const homeStyle = {
 const useStyle = {
   width: "70vw",
   height: "60vh",
-  margin: "auto" 
-  
+  margin : "auto"
 }
+
 
 const backgroundStyle = {
   width: "100vw",
@@ -113,6 +115,7 @@ const backgroundStyle = {
   backgroundPosition: "center",
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat"
+  
 }
 
 const titleStyle = {
@@ -128,9 +131,11 @@ const titleStyle = {
 
 const boxStyle = {
   margin : "auto",
-  height: "30vh",
-  width: "100vw",
+  height: "60vh",
+  width: "85vw",
   textAlign: "center",
+  background: white,
+  opacity: 0.75
   
 }
 
