@@ -7,16 +7,16 @@ import createKeccakHash from "keccak";
 import Mnemonic from "bitcore-mnemonic"
 // ここの画像は仮です
 import Sensouji from "../../img/sensouji.jpg"
-
 // ethereum
 import web3 from "../web3";
 import TicketFactoryContract from "../../deploy/contract_factory";
 import abi from "../../deploy/contract_ticket";
-import { db } from '../../index'
+import { db, database } from '../../index'
 
 class Detail extends Component {
-    constructor(props) {
+    constructor(props, {authData}) {
         super(props);
+        authData = this.props;
 
         this.state = {
             toDate: moment(),
@@ -128,14 +128,26 @@ class Detail extends Component {
         let TicketContract = TicketContracts[id]
         let price = this.state.price
         let value = web3.utils.toWei(String(price * num), "ether")
-        console.log(value)
+        
+        // firebase のuserにmnimoniicを保存
+        
+
+
         TicketContract.methods.join(days, num, uidKey).send({
             from: account,
             value: 1000,
             gas: 7000000
-        }).then(async () => {
-            console.log("happen: getSummary")
         })
+
+        /*
+        this.props.history.push({
+            pathname: "/qr",
+            state: {value: code}
+        })
+        */
+        // .then(async () => {
+        //     console.log("happen: getSummary")
+        // })
     }
 
     render() {
