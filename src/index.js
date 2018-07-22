@@ -14,7 +14,7 @@ import Dashboard from './layouts/dashboard/Dashboard'
 import TicketList from "./layouts/ticketlist/TicketList"
 import Detail from "./layouts/ticketdetail/Detail"
 import Profile from './user/layouts/profile/Profile'
-
+import QR from './layouts/qr/qr.js';
 
 // Redux Store
 import store from './store'
@@ -30,7 +30,8 @@ var config = {
   storageBucket: "godpay-f1032.appspot.com",
   messagingSenderId: "1068715886133"
 };
-firebase.initializeApp(config);
+const app = firebase.initializeApp(config);
+export const database = app.database().ref("/users");
 export const db = firebase.firestore();
 
 ReactDOM.render((
@@ -44,6 +45,7 @@ ReactDOM.render((
           <Route path="profile" component={UserIsAuthenticated(Profile)} />
           <Route path="tickets" component={UserIsAuthenticated(TicketList)} />
           <Route path="detail/:ticketid" component={UserIsAuthenticated(Detail)} />
+          <Route path="qr" component={UserIsAuthenticated(QR)} />
         </Route>
       </Router>
     </MuiThemeProvider>
